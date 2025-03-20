@@ -8,7 +8,7 @@ Welcome to the **Movie Explorer**! This project allows you to explore movies usi
 
 ---
 
-## 🛠️ Tech Stac
+## 🛠️ Tech Stack
 - **Nuxt.js 3** 
 - **Tailwind CSS** 
 - **TMDB API** 
