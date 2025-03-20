@@ -1,63 +1,107 @@
 <template>
-  <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold text-center my-6">🎬 Movie Explorer</h1>
+  <div>
+    <Suspense>
+      <template #default>
+        <div class="container mx-auto px-4">
 
-    <div class="flex justify-center mb-6">
-      <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search movies..."
-          class="px-4 py-2 border rounded-lg w-1/2"
-      />
-    </div>
+          <div class="flex flex-col md:flex-row gap-4 mb-6 mt-6">
+            <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Search movies..."
+                class="px-4 py-2 border rounded-lg flex-1 text-black"
+            />
+            <select v-model="selectedGenre" class="px-4 py-2 border rounded-lg text-black">
+              <option value="">All Genres</option>
+              <option v-for="genre in genres" :key="genre.id" :value="genre.name.toLowerCase()">
+                {{ genre.name }}
+              </option>
+            </select>
+            <select v-model="selectedYear" class="px-4 py-2 border rounded-lg text-black">
+              <option value="">All Years</option>
+              <option v-for="year in availableYears" :key="year" :value="year">
+                {{ year }}
+              </option>
+            </select>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <NuxtLink
-          v-for="movie in movies"
-          :key="movie.id"
-          :to="`/movie/${movie.id}`"
-          class="border rounded-lg overflow-hidden shadow-lg"
-      >
-        <img
-            :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-            :alt="movie.title"
-            class="w-full h-80 object-cover"
-        />
-        <div class="p-4">
-          <h2 class="font-bold text-lg">{{ movie.title }}</h2>
-          <p class="text-gray-500">⭐ {{ movie.vote_average.toFixed(1) }}</p>
+            <button
+                @click="searchMovies"
+                class="text-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
+            >
+              <Icon name="search"/>
+            </button>
+            <button
+                @click="clearSearch"
+                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+            >
+              <Icon name="close"/>
+            </button>
+          </div>
+
+          <p v-if="loadingGenres" class="text-gray-500 text-center">Loading genres...</p>
+          <p v-if="genresError" class="text-red-500 text-center">Error loading genres.</p>
+
+          <SearchResults
+              v-if="searchTriggered"
+              :searchQuery="searchQuery"
+              :selectedGenre="selectedGenre"
+              :selectedYear="selectedYear.toString()"
+          />
+
+          <MovieList v-else/>
         </div>
-      </NuxtLink>
-    </div>
+      </template>
+      <template #fallback>
+        <p>Loading...</p>
+      </template>
+    </Suspense>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import {ref, computed, watchEffect} from 'vue';
+import {defineAsyncComponent} from 'vue';
 
-const movies = ref([]);
-const currentPage = ref(1);
-const totalPages = ref(1);
+const MovieList = defineAsyncComponent(() => import("~/components/MovieList.vue"));
+const SearchResults = defineAsyncComponent(() => import("~/components/SearchResults.vue"));
+
+
 const searchQuery = ref('');
+const selectedYear = ref('');
+const selectedGenre = ref('');
+const genres = ref([]);
+const searchTriggered = ref(false);
 
-const loadMovies = async () => {
-  if (!searchQuery.value) {
-    const { data } = await useFetch(`/api/movies/popular?page=${currentPage.value}`);
-    if (data.value) {
-      movies.value = data.value.results;
-      totalPages.value = data.value.total_pages;
-    }
+watch(searchQuery, (newValue) => {
+  if (newValue.trim().length > 0) {
+    searchTriggered.value = true;
   } else {
-    const { data } = await useFetch(`/api/movies/search?q=${searchQuery.value}&page=1`);
-    if (data.value) {
-      movies.value = data.value.results;
-      totalPages.value = data.value.total_pages;
-    }
+    searchTriggered.value = false;
   }
+});
+
+const searchMovies = () => {
+  searchTriggered.value = true;
 };
+const clearSearch = () => {
+  searchQuery.value = '';
+  selectedGenre.value = '';
+  selectedYear.value = '';
+  searchTriggered.value = false;
+};
+const {data: genresData, pending: loadingGenres, error: genresError} = useAsyncData('genres', async () => {
+  const {data} = await useFetch('/api/movies/genres');
+  return data.value?.genres || [];
+});
 
-watch([searchQuery, currentPage], loadMovies);
+watchEffect(() => {
+  if (genresData.value) {
+    genres.value = genresData.value;
+  }
+});
 
-loadMovies();
+const availableYears = computed(() => {
+  const currentYear = new Date().getFullYear();
+  return Array.from({length: currentYear - 1899}, (_, i) => currentYear - i);
+});
 </script>
-

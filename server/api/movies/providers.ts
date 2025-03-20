@@ -6,5 +6,5 @@ export default defineEventHandler(async (event) => {
 
     if (!movieId) return {error: "Movie ID is required"};
 
-    return await fetchTMDBData(`/movie/${movieId}`, {append_to_response: "credits,videos"});
+    return await fetchTMDBData(`/movie/${movieId}/watch/providers`);
 });

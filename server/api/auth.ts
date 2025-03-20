@@ -13,6 +13,6 @@ export default defineEventHandler(async () => {
         const data = await response.json();
         return data;
     } catch (error) {
-        return { error: 'Failed to fetch data' };
+        return {error: 'Failed to fetch data'};
     }
 });
