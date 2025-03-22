@@ -1,8 +1,10 @@
 <template>
   <nav class="bg-gray-500 text-white p-4 dark:bg-gray-900">
     <div class="container mx-auto flex justify-between items-center">
-      <NuxtLink to="/"
-                class="flex items-center gap-2 text-2xl font-bold text-black hover:text-gray-400 transition duration-300 dark:text-white dark:hover:text-gray-400">
+      <NuxtLink
+          to="/"
+          class="flex items-center gap-2 text-base md:text-xl lg:text-2xl font-bold text-black hover:text-gray-400 transition duration-300 dark:text-white dark:hover:text-gray-400"
+      >
         <Icon name="film"/>
         {{ $t('title') }}
       </NuxtLink>
@@ -29,7 +31,7 @@
             >
               <div
                   v-if="showDropdown"
-                  class="absolute z-50 right-0 top-10 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10 text-black dark:text-white"
+                  class="absolute z-50 right-0 top-10 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-black dark:text-white"
               >
                 <NuxtLink
                     to="/"
@@ -67,7 +69,6 @@
                 class="px-3 py-1 rounded-lg hover:bg-gray-700 transition text-center text-white dark:text-white">
           <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
         </button>
-
         <button
             v-click-outside="() => showLang = false"
             @click="showLang = !showLang"
@@ -86,7 +87,7 @@
         >
           <div
               v-if="showLang"
-              class="absolute z-50 right-0 top-12 w-35 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10 text-black dark:text-white"
+              class="absolute z-50 top-14 w-35 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-black dark:text-white"
           >
             <button
                 @click="setLocale('en')"
