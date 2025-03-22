@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin, useRuntimeConfig } from '#app'
 import { initializeApp, type FirebaseApp } from 'firebase/app'
 import type { Auth } from 'firebase/auth'
 import {
@@ -8,17 +8,17 @@ import {
     signOut,
 } from 'firebase/auth'
 
-
 export default defineNuxtPlugin(() => {
+    const config = useRuntimeConfig()
     const firebaseConfig = {
-        apiKey: "AIzaSyCb4ClLo8piwWjJdtHMf-EcFeR8T-Aj0Vg",
-        authDomain: "movie-explorer-b3fca.firebaseapp.com",
-        projectId: "movie-explorer-b3fca",
-        storageBucket: "movie-explorer-b3fca.firebasestorage.app",
-        messagingSenderId: "173428736729",
-        appId: "1:173428736729:web:e321026954466fb940b4c8",
-        measurementId: "G-04G5DF53QW"
-    };
+        apiKey: config.public.firebaseApiKey,
+        authDomain: config.public.firebaseAuthDomain,
+        projectId: config.public.firebaseProjectId,
+        storageBucket: config.public.firebaseStorageBucket,
+        messagingSenderId: config.public.firebaseMessagingSenderId,
+        appId: config.public.firebaseAppId,
+        measurementId: config.public.firebaseMeasurementId
+    }
 
     const app: FirebaseApp = initializeApp(firebaseConfig)
     const auth: Auth = getAuth(app)
