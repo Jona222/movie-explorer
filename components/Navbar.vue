@@ -45,9 +45,12 @@
             <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
           </button>
         </div>
-        <div v-else>
+        <div v-else class="flex items-center gap-2 ">
           <button @click="login" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition">
             Login with Google
+          </button>
+          <button @click="toggleTheme" class="text-center text-white dark:text-white">
+            <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
           </button>
         </div>
       </ClientOnly>

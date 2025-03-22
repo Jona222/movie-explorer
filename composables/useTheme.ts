@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-const theme = ref("dark");
+const theme = ref<"light" | "dark">("dark");
 
 if (process.client) {
     theme.value = localStorage.getItem("theme") || "light";
