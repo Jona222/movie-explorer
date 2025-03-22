@@ -9,7 +9,7 @@
         {{ categoryNames[category]?.label }}
       </h2>
       <div v-if="categoryData.movies.length === 0 && !categoryData.loading" class="text-center text-gray-500">
-        No movies available in this category.
+        {{ t('categorySection.empty') }}
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -22,7 +22,7 @@
             class="px-4 py-2 bg-gray-700 text-white rounded-lg mx-2"
             :disabled="categoryData.loading || categoryData.page >= categoryData.totalPages"
         >
-          {{ categoryData.loading ? "Loading..." : "Load More" }}
+          {{ categoryData.loading ?  t('categorySection.loading') : t('categorySection.loadMore') }}
         </button>
       </div>
     </div>
@@ -31,29 +31,32 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
+import {useI18n} from 'vue-i18n'
 
-const categoryNames = {
+const {t} = useI18n()
+const categoryNames = computed(() => ({
   popular: {
-    label: "Popular Movies",
-    icon: "popular",
+    label: t('categories.popular'),
+    icon: 'popular',
   },
   trending: {
-    label: "Trending Movies",
-    icon: "trending",
+    label: t('categories.trending'),
+    icon: 'trending',
   },
   nowPlaying: {
-    label: "Streaming Now",
-    icon: "nowPlaying",
+    label: t('categories.nowPlaying'),
+    icon: 'nowPlaying',
   },
   upcoming: {
-    label: "Upcoming Movies",
-    icon: "upcoming",
+    label: t('categories.upcoming'),
+    icon: 'upcoming',
   },
   topRated: {
-    label: "Top Rated Movies",
-    icon: "topRated",
+    label: t('categories.topRated'),
+    icon: 'topRated',
   },
-};
+}))
+
 
 const categories = ["popular", "trending", "nowPlaying", "upcoming", "topRated"];
 

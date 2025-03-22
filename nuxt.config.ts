@@ -6,7 +6,7 @@ export default defineNuxtConfig({
         ]
     },
     devtools: {enabled: true},
-    modules: ['@pinia/nuxt', "@nuxtjs/tailwindcss"],
+    modules: ['@nuxtjs/i18n', '@pinia/nuxt', "@nuxtjs/tailwindcss"],
     runtimeConfig: {
         public: {
             tmdbApiKey: process.env.API_KEY,
@@ -21,5 +21,13 @@ export default defineNuxtConfig({
         }
     },
 
+    i18n: {
+        vueI18n: './i18n.config.ts',
+        experimental: {
+            bundle: {
+                optimizeTranslationDirective: false
+            }
+        }
+    },
     compatibilityDate: "2025-03-18"
 })

@@ -8,17 +8,17 @@
               <input
                   v-model="searchQuery"
                   type="text"
-                  placeholder="Search movies..."
+                  :placeholder="$t('search.search')"
                   class="px-4 py-2 border rounded-lg flex-1 text-black"
               />
               <select v-model="selectedGenre" class="px-4 py-2 border rounded-lg text-black">
-                <option value="">All Genres</option>
+                <option value=""> {{ $t('genres') }}</option>
                 <option v-for="genre in genres" :key="genre.id" :value="genre.name.toLowerCase()">
                   {{ genre.name }}
                 </option>
               </select>
               <select v-model="selectedYear" class="px-4 py-2 border rounded-lg text-black">
-                <option value="">All Years</option>
+                <option value="">{{ $t('years') }}</option>
                 <option v-for="year in availableYears" :key="year" :value="year">
                   {{ year }}
                 </option>
@@ -38,8 +38,8 @@
               </button>
             </div>
           </ClientOnly>
-          <p v-if="loadingGenres" class="text-gray-500 text-center">Loading genres...</p>
-          <p v-if="genresError" class="text-red-500 text-center">Error loading genres.</p>
+          <p v-if="loadingGenres" class="text-gray-500 text-center">{{ $t('loadingGenres') }}</p>
+          <p v-if="genresError" class="text-red-500 text-center">{{ $t('errorLoadingGenres') }}</p>
 
           <SearchResults
               v-if="searchTriggered"
@@ -52,7 +52,7 @@
         </div>
       </template>
       <template #fallback>
-        <p>Loading...</p>
+        <p>{{ $t('loading') }}</p>
       </template>
     </Suspense>
   </div>

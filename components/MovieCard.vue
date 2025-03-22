@@ -1,5 +1,6 @@
 <template>
-  <div class="border rounded-lg overflow-hidden relative group transition-transform duration-300 transform hover:scale-110">
+  <div
+      class="border rounded-lg overflow-hidden relative group transition-transform duration-300 transform hover:scale-110">
     <NuxtLink :to="`/movie/${movie.id}`" class="block shadow-lg">
       <img
           :src="movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : `https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg`"
@@ -20,32 +21,31 @@
             class="px-2 py-1 text-sm rounded-lg mb-2"
             :class="isFavorite ? 'bg-red-300 dark:bg-red-600 text-white shadow-lg shadow-red-500/50' : 'bg-gray-200 dark:bg-gray-500 text-white'"
         >
-          <Icon name="favorites" />
+          <Icon name="favorites"/>
         </button>
-
         <button
             @click.prevent="toggleWatchlist"
             class="px-2 py-1 text-sm rounded-lg"
             :class="isInWatchlist ? 'bg-blue-300 dark:bg-blue-600 text-white shadow-lg shadow-blue-500/50' : 'bg-gray-200 dark:bg-gray-500 text-white'"
         >
-          <Icon name="bookmark" />
+          <Icon name="bookmark"/>
         </button>
       </div>
     </div>
   </div>
-  <LoginPrompt v-if="showLoginPrompt" @close="showLoginPrompt = false" />
+  <LoginPrompt v-if="showLoginPrompt" @close="showLoginPrompt = false"/>
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
-import { useFavoritesStore } from '~/stores/favorites';
-import { useWatchlistStore } from '~/stores/watchlist';
-import { useAuth } from '~/composables/useAuth'
+import {defineProps, computed} from 'vue';
+import {useFavoritesStore} from '~/stores/favorites';
+import {useWatchlistStore} from '~/stores/watchlist';
+import {useAuth} from '~/composables/useAuth'
 import LoginPrompt from '~/components/LoginPrompt.vue'
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const showLoginPrompt = ref(false)
-const { user } = useAuth()
+const {user} = useAuth()
 const props = defineProps<{ movie: any }>();
 
 const favoritesStore = useFavoritesStore();

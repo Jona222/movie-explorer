@@ -1,20 +1,20 @@
 <template>
   <div class="container mx-auto px-4 py-10 overflow-hidden">
     <h1 class="flex items-center justify-center gap-2 text-3xl font-bold text-center">
-      <Icon name="favorites" />
-      My Favorite Movies
+      <Icon name="favorites"/>
+      {{ t('favoritesPage.title') }}
     </h1>
 
     <div v-if="!user" class="text-center text-gray-400 mt-6 text-lg">
       <p class="flex items-center justify-center gap-2">
-        <Icon name="lock" />
-        You must be logged in to view and manage your favorite movies.
+        <Icon name="lock"/>
+        {{ t('favoritesPage.loginNotice') }}
       </p>
     </div>
 
     <div v-else>
       <div v-if="favoritesStore.favorites.length === 0" class="text-center text-gray-400 mt-6">
-        No favorite movies added yet.
+        {{ t('favoritesPage.empty') }}
       </div>
 
       <div class="flex flex-col gap-6 mt-6">
@@ -42,7 +42,7 @@
               @click="removeFromFavorites(movie.id)"
               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
           >
-            Remove
+            {{ t('favoritesPage.remove') }}
           </button>
         </div>
       </div>
@@ -54,10 +54,11 @@
 import {ref, nextTick} from 'vue';
 import {useFavoritesStore} from '~/stores/favorites';
 import {useHead} from '#imports';
-import { useAuth } from '~/composables/useAuth'
+import {useAuth} from '~/composables/useAuth'
+import {useI18n} from 'vue-i18n'
 
-const { user } = useAuth()
-
+const {t} = useI18n()
+const {user} = useAuth()
 const favoritesStore = useFavoritesStore();
 const removingMovie = ref<number | null>(null);
 useHead({

@@ -1,20 +1,20 @@
 <template>
   <div class="container mx-auto px-4 py-10 overflow-hidden">
     <h1 class="flex items-center justify-center gap-2 text-3xl font-bold text-center">
-      <Icon name="watchlist" />
-      My Watchlist
+      <Icon name="watchlist"/>
+      {{ t('watchlistPage.title') }}
     </h1>
 
     <div v-if="!user" class="text-center text-gray-400 mt-6 text-lg">
       <p class="flex items-center justify-center gap-2">
-        <Icon name="lock" />
-        You must be logged in to view and manage your watchlist.
+        <Icon name="lock"/>
+        {{ t('watchlistPage.loginNotice') }}
       </p>
     </div>
 
     <div v-else>
       <div v-if="watchlistStore.watchlist.length === 0" class="text-center text-gray-400 mt-6">
-        No movies in Watchlist yet.
+        {{ t('watchlistPage.empty') }}
       </div>
 
       <div class="flex flex-col gap-6 mt-6">
@@ -38,7 +38,7 @@
             <p class="text-yellow-400 mt-2">⭐ {{ movie.vote_average.toFixed(1) }}</p>
 
             <div v-if="watchProviders[movie.id]" class="mt-2 flex items-center gap-2">
-              <span class="text-gray-300">Available on:</span>
+              <span class="text-gray-300">{{ t('watchlistPage.availableOn') }}:</span>
               <img
                   v-for="provider in watchProviders[movie.id]"
                   :key="provider.provider_id"
@@ -53,7 +53,7 @@
               @click="removeFromWatchlist(movie.id)"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
-            Remove
+            {{ t('watchlistPage.remove') }}
           </button>
         </div>
       </div>
@@ -65,9 +65,11 @@
 import {ref, nextTick, onMounted} from 'vue';
 import {useWatchlistStore} from '~/stores/watchlist';
 import {useHead} from '#imports';
-import { useAuth } from '~/composables/useAuth'
+import {useAuth} from '~/composables/useAuth'
+import {useI18n} from 'vue-i18n'
 
-const { user } = useAuth()
+const {t} = useI18n()
+const {user} = useAuth()
 
 const watchlistStore = useWatchlistStore();
 const removingMovie = ref<number | null>(null);

@@ -2,15 +2,16 @@
   <div>
     <h2 class="flex items-center gap-2 text-2xl font-bold my-4">
       <Icon name="search"/>
-      Search Results
+      {{ t('search.title') }}
     </h2>
 
     <div v-if="isLoading" class="text-center my-6">
-      <span class="text-xl">Loading movies...</span>
+      <span class="text-xl">{{ t('search.loading') }}</span>
     </div>
 
     <div v-if="movies.length === 0 && !isLoading" class="text-center my-6">
-      <span class="flex items-center gap-2 text-xl text-gray-500">No movies found
+      <span class="flex items-center gap-2 text-xl text-gray-500">
+        {{ t('search.noResults') }}
         <Icon name="sad"/></span>
     </div>
 
@@ -23,6 +24,9 @@
 </template>
 <script setup lang="ts">
 import {ref, defineProps, onMounted, watch} from 'vue';
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 const props = defineProps({
   searchQuery: String,

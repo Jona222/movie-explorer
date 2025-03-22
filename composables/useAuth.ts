@@ -13,7 +13,6 @@ export function useAuth() {
             console.error('Login error:', error)
         }
     }
-
     const logout = async () => {
         try {
             await $firebase.signOut($firebase.auth)
@@ -25,7 +24,6 @@ export function useAuth() {
     onAuthStateChanged($firebase.auth, (currentUser) => {
         user.value = currentUser
     })
-
 
     return {
         user,

@@ -25,8 +25,8 @@
           </div>
 
           <div class="mt-6">
-            <h2 class="text-xl font-bold">Director: {{ director }}</h2>
-            <h2 class="text-xl font-bold mt-2">Cast:</h2>
+            <h2 class="text-xl font-bold">{{ t('details.director') }}: {{ director }}</h2>
+            <h2 class="text-xl font-bold mt-2"> {{ t('details.cast') }}:</h2>
             <ul class="flex gap-4 mt-2">
               <li v-for="actor in cast" :key="actor.id" class="text-sm flex flex-col items-center justify-center ">
                 <img
@@ -41,7 +41,7 @@
           </div>
 
           <div v-if="trailerKey" class="mt-6">
-            <h2 class="text-xl font-bold">Trailer:</h2>
+            <h2 class="text-xl font-bold"> {{ t('details.trailer') }}:</h2>
             <iframe
                 class="w-full md:w-2/3 h-64 rounded-lg shadow-lg mt-2"
                 :src="`https://www.youtube.com/embed/${trailerKey}`"
@@ -57,7 +57,7 @@
                 :class="isFavorite ? 'text-black bg-red-300 dark:bg-red-500 dark:text-white' : 'bg-gray-700'"
             >
               <Icon name="favorites"/>
-              {{ isFavorite ? "Remove from Favorites" : "Add to Favorites" }}
+              {{ isFavorite ? t('details.removeFromFavorites') : t('details.addToFavorites') }}
             </button>
             <button
                 @click="toggleWatchlist"
@@ -65,10 +65,11 @@
                 :class="isInWatchlist ? 'text-black bg-blue-300 dark:bg-blue-500 dark:text-white' : 'bg-gray-700'"
             >
               <Icon name="bookmark"/>
-              {{ isInWatchlist ? "Remove from Watchlist" : "Add to Watchlist" }}
+              {{ isInWatchlist ? t('details.removeFromWatchlist') : t('details.addToWatchlist') }}
             </button>
             <button @click="shareMovie"
-                    class="text-black bg-green-300 dark:bg-green-500 dark:text-white px-4 py-2 rounded-lg">🔗 Share
+                    class="text-black bg-green-300 dark:bg-green-500 dark:text-white px-4 py-2 rounded-lg">🔗
+              {{ t('details.share') }}
             </button>
           </div>
         </div>
@@ -92,6 +93,9 @@ import {useHead} from '#imports';
 import {useAuth} from '~/composables/useAuth'
 import LoginPrompt from '~/components/LoginPrompt.vue'
 import {ref} from 'vue'
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 const showLoginPrompt = ref(false)
 const {user} = useAuth()

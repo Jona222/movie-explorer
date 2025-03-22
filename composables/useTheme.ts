@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import {ref} from "vue";
 
 const theme = ref<"light" | "dark">("dark");
 
@@ -14,5 +14,5 @@ const toggleTheme = () => {
 };
 
 export const useTheme = () => {
-    return { theme, toggleTheme };
+    return {theme, toggleTheme};
 };
