@@ -3,41 +3,41 @@
     <Suspense>
       <template #default>
         <div class="container mx-auto px-4">
+          <ClientOnly>
+            <div class="flex flex-col md:flex-row gap-4 mb-6 mt-6">
+              <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="Search movies..."
+                  class="px-4 py-2 border rounded-lg flex-1 text-black"
+              />
+              <select v-model="selectedGenre" class="px-4 py-2 border rounded-lg text-black">
+                <option value="">All Genres</option>
+                <option v-for="genre in genres" :key="genre.id" :value="genre.name.toLowerCase()">
+                  {{ genre.name }}
+                </option>
+              </select>
+              <select v-model="selectedYear" class="px-4 py-2 border rounded-lg text-black">
+                <option value="">All Years</option>
+                <option v-for="year in availableYears" :key="year" :value="year">
+                  {{ year }}
+                </option>
+              </select>
 
-          <div class="flex flex-col md:flex-row gap-4 mb-6 mt-6">
-            <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Search movies..."
-                class="px-4 py-2 border rounded-lg flex-1 text-black"
-            />
-            <select v-model="selectedGenre" class="px-4 py-2 border rounded-lg text-black">
-              <option value="">All Genres</option>
-              <option v-for="genre in genres" :key="genre.id" :value="genre.name.toLowerCase()">
-                {{ genre.name }}
-              </option>
-            </select>
-            <select v-model="selectedYear" class="px-4 py-2 border rounded-lg text-black">
-              <option value="">All Years</option>
-              <option v-for="year in availableYears" :key="year" :value="year">
-                {{ year }}
-              </option>
-            </select>
-
-            <button
-                @click="searchMovies"
-                class="text-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
-            >
-              <Icon name="search"/>
-            </button>
-            <button
-                @click="clearSearch"
-                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
-            >
-              <Icon name="close"/>
-            </button>
-          </div>
-
+              <button
+                  @click="searchMovies"
+                  class="text-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
+              >
+                <Icon name="search"/>
+              </button>
+              <button
+                  @click="clearSearch"
+                  class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+              >
+                <Icon name="close"/>
+              </button>
+            </div>
+          </ClientOnly>
           <p v-if="loadingGenres" class="text-gray-500 text-center">Loading genres...</p>
           <p v-if="genresError" class="text-red-500 text-center">Error loading genres.</p>
 

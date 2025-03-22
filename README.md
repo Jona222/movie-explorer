@@ -11,9 +11,10 @@ Welcome to the **Movie Explorer**! This project allows you to explore movies usi
 ## 🛠️ Tech Stack
 - **Nuxt.js 3** 
 - **Tailwind CSS** 
-- **TMDB API** 
-- **Vercel**
+- **TMDB API**
 - **Pinia** (State Management)
+- **Firebase Auth**
+- **Vercel**
   
 ---
 
@@ -23,4 +24,5 @@ Welcome to the **Movie Explorer**! This project allows you to explore movies usi
 git clone https://github.com/Jona222/movie-explorer.git
 cd movie-explorer
 npm install
+npx nuxi prepare
 npm run dev

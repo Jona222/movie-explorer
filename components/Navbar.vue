@@ -6,55 +6,51 @@
         <Icon name="film"/>
         Movie Explorer
       </NuxtLink>
-      <div class="md:hidden flex gap-2">
-        <button @click="toggleTheme" class="text-center text-white dark:text-white">
-          <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
-        </button>
-
-        <button @click="isMenuOpen = !isMenuOpen" class="text-white focus:outline-none">
-          <Icon :name="isMenuOpen ? 'close' : 'menu'" class="w-6 h-6"/>
-        </button>
-      </div>
-
-      <div class="hidden md:flex gap-4">
-        <NuxtLink
-            to="/favorites"
-            class="flex items-center gap-2 text-lg bg-red-400 dark:bg-red-500 px-3 text-white py-1 rounded-lg hover:bg-red-600 transition duration-300"
+      <ClientOnly>
+        <div
+            v-if="user"
+            class="relative flex items-center gap-2 "
+            v-click-outside="() => showDropdown = false"
         >
-          <Icon name="favorites"/>
-          Favorites
-        </NuxtLink>
-        <NuxtLink
-            to="/watchlist"
-            class="flex items-center gap-2 text-lg bg-blue-400 dark:bg-blue-500 px-3 text-white py-1 rounded-lg hover:bg-blue-600 transition duration-300"
-        >
-          <Icon name="watchlist"/>
-          Watchlist
-        </NuxtLink>
-        <button @click="toggleTheme" class="text-white dark:text-white">
-          <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
-        </button>
-      </div>
-    </div>
+          <button @click="showDropdown = !showDropdown"
+                  class="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-gray-700 transition">
+            <img :src="user?.photoURL" alt="avatar" class="w-8 h-8 rounded-full"/>
+            <span class="hidden md:flex text-black dark:text-white">{{ user?.displayName }}</span>
+          </button>
+          <transition
+              name="dropdown"
+              enter-active-class="transition ease-out duration-200"
+              enter-from-class="opacity-0 translate-y-2"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition ease-in duration-150"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-2"
+          >
+            <div
+                v-if="showDropdown"
+                class="absolute z-50 right-0 top-10 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10 text-black dark:text-white"
+            >
+              <NuxtLink to="/" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Home
+              </NuxtLink>
+              <NuxtLink to="/favorites" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Favorites
+              </NuxtLink>
+              <NuxtLink to="/watchlist" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Watchlist
+              </NuxtLink>
+              <button @click="logout" class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Logout
+              </button>
+            </div>
+          </transition>
 
-    <!-- Mobile Menu -->
-    <div v-if="isMenuOpen" class="flex flex-col gap-2 md:hidden mt-4 bg-gray-600 dark:bg-gray-800 p-4 rounded-lg">
-      <NuxtLink
-          to="/favorites"
-          class="flex items-center gap-2 text-lg bg-red-400 dark:bg-red-500 px-3 text-white py-1 rounded-lg hover:bg-red-600 transition duration-300"
-          @click="isMenuOpen = false"
-      >
-        <Icon name="favorites"/>
-        Favorites
-      </NuxtLink>
-      <NuxtLink
-          to="/watchlist"
-          class="flex items-center gap-2 text-lg bg-blue-400 dark:bg-blue-500 px-3 text-white py-1 rounded-lg hover:bg-blue-600 transition duration-300"
-          @click="isMenuOpen = false"
-      >
-        <Icon name="watchlist"/>
-        Watchlist
-      </NuxtLink>
+          <button @click="toggleTheme" class="text-center text-white dark:text-white">
+            <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
+          </button>
+        </div>
+        <div v-else>
+          <button @click="login" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition">
+            Login with Google
+          </button>
+        </div>
+      </ClientOnly>
     </div>
   </nav>
 </template>
@@ -62,7 +58,10 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {useTheme} from "~/composables/useTheme";
+import {useAuth} from '~/composables/useAuth'
 
+const {user, login, logout} = useAuth()
+const showDropdown = ref(false)
 const {theme, toggleTheme} = useTheme();
 const isMenuOpen = ref(false);
 </script>

@@ -15,7 +15,9 @@
           <p class="text-gray-400 text-lg mt-2">{{ movie.overview }}</p>
 
           <div class="flex gap-4 mt-4">
-            <span class="bg-yellow-800 text-black px-3 py-1 rounded-lg">⭐ {{ movie.vote_average?.toFixed(1) }}</span>
+            <span class="bg-yellow-800 text-black px-3 py-1 rounded-lg dark:text-white">⭐ {{
+                movie.vote_average?.toFixed(1)
+              }}</span>
             <span v-for="genre in movie.genres" :key="genre.id"
                   class="text-black bg-gray-400 dark:text-white dark:bg-gray-800 px-3 py-1 rounded-lg">
               {{ genre.name }}
@@ -73,6 +75,7 @@
       </div>
     </div>
   </div>
+  <LoginPrompt v-if="showLoginPrompt" @close="showLoginPrompt = false"/>
 </template>
 
 <script setup lang="ts">
@@ -86,7 +89,12 @@ import {useAsyncData} from '#app';
 import {useFavoritesStore} from '~/stores/favorites';
 import {useWatchlistStore} from '~/stores/watchlist';
 import {useHead} from '#imports';
+import {useAuth} from '~/composables/useAuth'
+import LoginPrompt from '~/components/LoginPrompt.vue'
+import {ref} from 'vue'
 
+const showLoginPrompt = ref(false)
+const {user} = useAuth()
 const route = useRoute();
 const favoritesStore = useFavoritesStore();
 const watchlistStore = useWatchlistStore();
@@ -112,14 +120,29 @@ useHead({
 });
 
 const toggleFavorite = () => {
+  if (!user.value) {
+    showLoginPrompt.value = true
+    return
+  }
+
   if (!movie.value) return;
-  isFavorite.value ? favoritesStore.removeFavorite(movie.value.id) : favoritesStore.addFavorite(movie.value);
+  isFavorite.value
+      ? favoritesStore.removeFavorite(movie.value.id)
+      : favoritesStore.addFavorite(movie.value);
+
 };
 
 const toggleWatchlist = () => {
+  if (!user.value) {
+    showLoginPrompt.value = true
+    return
+  }
   if (!movie.value) return;
-  isInWatchlist.value ? watchlistStore.removeFromWatchlist(movie.value.id) : watchlistStore.addToWatchlist(movie.value);
-};
+  isInWatchlist.value
+      ? watchlistStore.removeFromWatchlist(movie.value.id)
+      : watchlistStore.addToWatchlist(movie.value);
+
+}
 
 const shareMovie = () => {
   if (!movie.value) return;

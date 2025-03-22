@@ -55,10 +55,10 @@ const fetchMovies = async () => {
   if (!props.searchQuery && props.selectedSort) endpoint += `&sort_by=${encodeURIComponent(props.selectedSort)}`;
 
   try {
-    const {data} = await useFetch(endpoint);
-    if (data.value) {
-      movies.value = searchPage.value === 1 ? data.value.results : [...movies.value, ...data.value.results];
-      totalPages.value = data.value.total_pages;
+    const data = await $fetch(endpoint);
+    if (data) {
+      movies.value = searchPage.value === 1 ? data.results : [...movies.value, ...data.results];
+      totalPages.value = data.total_pages;
     }
   } catch (error) {
     console.error("Error fetching movies:", error);

@@ -33,13 +33,19 @@
       </div>
     </div>
   </div>
+  <LoginPrompt v-if="showLoginPrompt" @close="showLoginPrompt = false" />
 </template>
 
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
 import { useFavoritesStore } from '~/stores/favorites';
 import { useWatchlistStore } from '~/stores/watchlist';
+import { useAuth } from '~/composables/useAuth'
+import LoginPrompt from '~/components/LoginPrompt.vue'
+import { ref } from 'vue'
 
+const showLoginPrompt = ref(false)
+const { user } = useAuth()
 const props = defineProps<{ movie: any }>();
 
 const favoritesStore = useFavoritesStore();
@@ -49,14 +55,25 @@ const isFavorite = computed(() => favoritesStore.isFavorite(props.movie.id));
 const isInWatchlist = computed(() => watchlistStore.isInWatchlist(props.movie.id));
 
 const toggleFavorite = () => {
+  if (!user.value) {
+    showLoginPrompt.value = true
+    return
+  }
+
   isFavorite.value
       ? favoritesStore.removeFavorite(props.movie.id)
-      : favoritesStore.addFavorite(props.movie);
-};
+      : favoritesStore.addFavorite(props.movie)
+}
 
 const toggleWatchlist = () => {
+  if (!user.value) {
+    showLoginPrompt.value = true
+    return
+  }
+
   isInWatchlist.value
       ? watchlistStore.removeFromWatchlist(props.movie.id)
-      : watchlistStore.addToWatchlist(props.movie);
-};
+      : watchlistStore.addToWatchlist(props.movie)
+}
+
 </script>
