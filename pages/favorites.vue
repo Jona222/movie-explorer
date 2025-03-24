@@ -29,7 +29,7 @@
                 :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
                 :alt="movie.title"
                 class="w-full h-full object-cover rounded-lg"
-            />
+            >
           </NuxtLink>
 
           <div class="flex-1 px-6">
@@ -39,8 +39,8 @@
           </div>
 
           <button
-              @click="removeFromFavorites(movie.id)"
               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+              @click="removeFromFavorites(movie.id)"
           >
             {{ t('favoritesPage.remove') }}
           </button>
@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import {ref, nextTick} from 'vue';
 import {useFavoritesStore} from '~/stores/favorites';
-import {useHead} from '#imports';
+import {useHead} from 'nuxt/app';
 import {useAuth} from '~/composables/useAuth'
 import {useI18n} from 'vue-i18n'
 

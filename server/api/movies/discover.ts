@@ -1,6 +1,6 @@
 import {fetchTMDBData} from '~/server/utils/tmdb';
-
-export default defineEventHandler(async (event) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default defineEventHandler(async (event: any) => {
     const {genre, year, page = 1, sort_by = 'popularity.desc'} = getQuery(event);
 
     let url = `/discover/movie?page=${page}&sort_by=${encodeURIComponent(sort_by)}`;
@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
             total_pages: data.total_pages || 1,
         };
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error fetching discovered movies:", error);
         return {error: "Failed to fetch movies"};
     }

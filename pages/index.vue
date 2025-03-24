@@ -10,7 +10,7 @@
                   type="text"
                   :placeholder="$t('search.search')"
                   class="px-4 py-2 border rounded-lg flex-1 text-black"
-              />
+              >
               <select v-model="selectedGenre" class="px-4 py-2 border rounded-lg text-black">
                 <option value=""> {{ $t('genres') }}</option>
                 <option v-for="genre in genres" :key="genre.id" :value="genre.name.toLowerCase()">
@@ -25,14 +25,14 @@
               </select>
 
               <button
-                  @click="searchMovies"
                   class="text-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-300"
+                  @click="searchMovies"
               >
                 <Icon name="search"/>
               </button>
               <button
-                  @click="clearSearch"
                   class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300"
+                  @click="clearSearch"
               >
                 <Icon name="close"/>
               </button>
@@ -43,9 +43,9 @@
 
           <SearchResults
               v-if="searchTriggered"
-              :searchQuery="searchQuery"
-              :selectedGenre="selectedGenre"
-              :selectedYear="selectedYear.toString()"
+              :search-query="searchQuery"
+              :selected-genre="selectedGenre"
+              :selected-year="selectedYear.toString()"
           />
 
           <MovieList v-else/>
@@ -59,8 +59,8 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed, watchEffect} from 'vue';
-import {defineAsyncComponent} from 'vue';
+import {ref, computed, watchEffect,defineAsyncComponent} from 'vue';
+
 
 const MovieList = defineAsyncComponent(() => import("~/components/MovieList.vue"));
 const SearchResults = defineAsyncComponent(() => import("~/components/SearchResults.vue"));

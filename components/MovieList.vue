@@ -18,9 +18,9 @@
 
       <div class="flex justify-center mt-6">
         <button
-            @click="loadMore(category)"
             class="px-4 py-2 bg-gray-700 text-white rounded-lg mx-2"
             :disabled="categoryData.loading || categoryData.page >= categoryData.totalPages"
+            @click="loadMore(category)"
         >
           {{ categoryData.loading ?  t('categorySection.loading') : t('categorySection.loadMore') }}
         </button>
@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {useI18n} from 'vue-i18n'
+import type {Movie} from "~/types/movie";
 
 const {t} = useI18n()
 const categoryNames = computed(() => ({
@@ -60,11 +61,11 @@ const categoryNames = computed(() => ({
 
 const categories = ["popular", "trending", "nowPlaying", "upcoming", "topRated"];
 
-const movieCategories = ref<Record<string, { movies: any[], page: number, totalPages: number, loading: boolean }>>(
+const movieCategories = ref<Record<string, { movies: Movie[], page: number, totalPages: number, loading: boolean }>>(
     Object.fromEntries(categories.map(category => [category, {movies: [], page: 1, totalPages: 1, loading: false}]))
 );
 
-const categoryData = Object.fromEntries(
+const categoryAsyncData = Object.fromEntries(
     categories.map(category => [
       category,
       useAsyncData(category, () => $fetch(`/api/movies/${category}?page=1`))
@@ -73,7 +74,7 @@ const categoryData = Object.fromEntries(
 
 categories.forEach(category => {
   watchEffect(() => {
-    const {data, pending} = categoryData[category];
+    const {data, pending} = categoryAsyncData[category];
 
     if (data.value) {
       movieCategories.value[category].movies = data.value.results || [];

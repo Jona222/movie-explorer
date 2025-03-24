@@ -2,11 +2,20 @@ export default defineNuxtConfig({
     pages: true,
     components: {
         dirs: [
-            {path: '~/components', extensions: ['vue'], lazy: true}
+            {path: '~/components', extensions: ['vue']}
         ]
     },
     devtools: {enabled: true},
-    modules: ['@nuxtjs/i18n', '@pinia/nuxt', "@nuxtjs/tailwindcss"],
+    plugins: ['~/plugins/pinia.ts'],
+    modules: [
+        '@nuxtjs/i18n',
+        '@pinia/nuxt',
+        "@nuxtjs/tailwindcss",
+        '@nuxt/eslint'
+    ],
+    eslint: {
+        checker: true
+    },
     runtimeConfig: {
         public: {
             tmdbApiKey: process.env.API_KEY,
@@ -22,12 +31,7 @@ export default defineNuxtConfig({
     },
 
     i18n: {
-        vueI18n: './i18n.config.ts',
-        experimental: {
-            bundle: {
-                optimizeTranslationDirective: false
-            }
-        }
+        vueI18n: './i18n.config.ts'
     },
     compatibilityDate: "2025-03-18"
 })

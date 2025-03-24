@@ -12,12 +12,13 @@
         <ClientOnly>
           <div
               v-if="user"
-              class="relative flex items-center gap-2 "
               v-click-outside="() => showDropdown = false"
+              class="relative flex items-center gap-2 "
           >
-            <button @click="showDropdown = !showDropdown"
-                    class="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-gray-700 transition">
-              <img :src="user?.photoURL" alt="avatar" class="w-8 h-8 rounded-full"/>
+            <button
+class="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-gray-700 transition"
+                    @click="showDropdown = !showDropdown">
+              <img :src="user?.photoURL" alt="avatar" class="w-8 h-8 rounded-full">
               <span class="hidden md:flex text-black dark:text-white">{{ user?.displayName }}</span>
             </button>
             <transition
@@ -51,28 +52,30 @@
                     @click="showDropdown = false"
                 >{{ $t('watchlist') }}
                 </NuxtLink>
-                <button @click="logout"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                <button
+class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                        @click="logout">
                   {{ $t('logout') }}
                 </button>
               </div>
             </transition>
           </div>
           <div v-else class="flex items-center gap-1 ">
-            <button @click="login" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition">
+            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition" @click="login">
               {{ $t('login') }}
             </button>
 
           </div>
         </ClientOnly>
-        <button @click="toggleTheme"
-                class="px-3 py-1 rounded-lg hover:bg-gray-700 transition text-center text-white dark:text-white">
+        <button
+class="px-3 py-1 rounded-lg hover:bg-gray-700 transition text-center text-white dark:text-white"
+                @click="toggleTheme">
           <Icon :name="theme === 'dark' ? 'sun' : 'moon'"/>
         </button>
         <button
             v-click-outside="() => showLang = false"
-            @click="showLang = !showLang"
             class="px-3 py-1 rounded-lg hover:bg-gray-700 transition"
+            @click="showLang = !showLang"
         >
           <Icon name="globe"/>
         </button>
@@ -90,14 +93,14 @@
               class="absolute z-50 top-14 w-35 bg-white dark:bg-gray-800 rounded-lg shadow-lg text-black dark:text-white"
           >
             <button
-                @click="setLocale('en')"
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 w-full text-left rounded-lg"
+                @click="setLocale('en')"
             >
               {{ $t('eng') }}
             </button>
             <button
-                @click="setLocale('me')"
                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+                @click="setLocale('me')"
             >
               {{ $t('me') }}
             </button>
@@ -120,6 +123,5 @@ const {theme, toggleTheme} = useTheme();
 
 const showDropdown = ref(false)
 const showLang = ref(false)
-const {t} = useI18n()
 
 </script>

@@ -2,8 +2,13 @@ import {ref} from "vue";
 
 const theme = ref<"light" | "dark">("dark");
 
-if (process.client) {
-    theme.value = localStorage.getItem("theme") || "light";
+if (import.meta.client) {
+    const savedTheme = localStorage.getItem("theme")
+    if (savedTheme === "light" || savedTheme === "dark") {
+        theme.value = savedTheme
+    } else {
+        theme.value = "light"
+    }
     document.documentElement.classList.toggle("dark", theme.value === "dark");
 }
 

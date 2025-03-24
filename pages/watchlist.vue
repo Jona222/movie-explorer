@@ -29,7 +29,7 @@
                 :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
                 :alt="movie.title"
                 class="w-full h-full object-cover rounded-lg"
-            />
+            >
           </NuxtLink>
 
           <div class="flex-1 px-6">
@@ -45,13 +45,13 @@
                   :src="`https://image.tmdb.org/t/p/w45/${provider.logo_path}`"
                   :alt="provider.provider_name"
                   class="w-8 h-8 rounded-md"
-              />
+              >
             </div>
           </div>
 
           <button
-              @click="removeFromWatchlist(movie.id)"
               class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              @click="removeFromWatchlist(movie.id)"
           >
             {{ t('watchlistPage.remove') }}
           </button>
@@ -64,35 +64,52 @@
 <script setup lang="ts">
 import {ref, nextTick, onMounted} from 'vue';
 import {useWatchlistStore} from '~/stores/watchlist';
-import {useHead} from '#imports';
+import {useHead} from 'nuxt/app';
 import {useAuth} from '~/composables/useAuth'
 import {useI18n} from 'vue-i18n'
+interface WatchProvider {
+  provider_id: number
+  provider_name: string
+  logo_path: string
+}
+interface CountryProviderData {
+  flatrate?: WatchProvider[]
+  buy?: WatchProvider[]
+  rent?: WatchProvider[]
+}
+
 
 const {t} = useI18n()
 const {user} = useAuth()
 
 const watchlistStore = useWatchlistStore();
 const removingMovie = ref<number | null>(null);
-const watchProviders = ref<Record<number, any>>({});
+const watchProviders = ref<Record<number, WatchProvider[] | null>>({})
 
 const fetchWatchProviders = async () => {
   for (const movie of watchlistStore.watchlist) {
     try {
-      const response = await $fetch(`/api/movies/providers?movieId=${movie.id}`);
+      const response = await $fetch<{ results: Record<string, CountryProviderData> }>(
+          `/api/movies/providers?movieId=${movie.id}`
+      )
 
-      const firstCountryWithProviders = Object.values(response?.results || {}).find(
-          (country: any) => country.flatrate || country.buy || country.rent
-      );
+      const firstCountryWithProviders = Object.values(response.results || {}).find(
+          (country) => country.flatrate || country.buy || country.rent
+      )
 
-      watchProviders.value[movie.id] = firstCountryWithProviders?.flatrate ||
+      watchProviders.value[movie.id] =
+          firstCountryWithProviders?.flatrate ||
           firstCountryWithProviders?.buy ||
-          firstCountryWithProviders?.rent || null;
+          firstCountryWithProviders?.rent ||
+          null
     } catch (error) {
-      console.error(`Error fetching providers for movie ${movie.id}:`, error);
-      watchProviders.value[movie.id] = null;
+      // eslint-disable-next-line no-console
+      console.error(`Error fetching providers for movie ${movie.id}:`, error)
+      watchProviders.value[movie.id] = null
     }
   }
-};
+}
+
 useHead({
   title: "Watchlist - Movie Explorer",
   meta: [

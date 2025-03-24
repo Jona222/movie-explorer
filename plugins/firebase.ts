@@ -1,4 +1,4 @@
-import { defineNuxtPlugin, useRuntimeConfig } from '#app'
+import { defineNuxtPlugin, useRuntimeConfig } from 'nuxt/app'
 import { initializeApp, type FirebaseApp } from 'firebase/app'
 import type { Auth } from 'firebase/auth'
 import {

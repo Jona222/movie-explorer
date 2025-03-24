@@ -19,7 +19,7 @@
       <MovieCard v-for="movie in movies" :key="movie.id" :movie="movie"/>
     </div>
 
-    <div ref="loadTrigger" class="h-10"></div>
+    <div ref="loadTrigger" class="h-10"/>
   </div>
 </template>
 <script setup lang="ts">
@@ -28,12 +28,18 @@ import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
 
-const props = defineProps({
-  searchQuery: String,
-  selectedGenre: String,
-  selectedYear: String,
-  selectedSort: String,
-});
+const props = withDefaults(defineProps<{
+  searchQuery?: string
+  selectedGenre?: string
+  selectedYear?: string
+  selectedSort?: string
+}>(), {
+  searchQuery: '',
+  selectedGenre: '',
+  selectedYear: '',
+  selectedSort: '',
+})
+
 
 const movies = ref([]);
 const isLoading = ref(false);
@@ -64,8 +70,6 @@ const fetchMovies = async () => {
       movies.value = searchPage.value === 1 ? data.results : [...movies.value, ...data.results];
       totalPages.value = data.total_pages;
     }
-  } catch (error) {
-    console.error("Error fetching movies:", error);
   } finally {
     isLoading.value = false;
   }

@@ -1,6 +1,6 @@
 import {fetchTMDBData} from '~/server/utils/tmdb';
-
-export default defineEventHandler(async (event) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default defineEventHandler(async (event: any) => {
     const query = getQuery(event);
     const page = query.page || 1;
 

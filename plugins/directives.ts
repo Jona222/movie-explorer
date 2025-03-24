@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from 'nuxt/app'
 import clickOutside from '~/directives/clickOutside'
 
 export default defineNuxtPlugin((nuxtApp) => {

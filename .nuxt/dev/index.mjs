@@ -1248,10 +1248,7 @@ const _inlineRuntimeConfig = {
         "typedOptionsAndMessages": false,
         "generatedLocaleFilePathFormat": "absolute",
         "alternateLinkCanonicalQueries": false,
-        "hmr": true,
-        "bundle": {
-          "optimizeTranslationDirective": false
-        }
+        "hmr": true
       },
       "multiDomainLocales": false
     }
@@ -1719,7 +1716,7 @@ const auth = defineEventHandler(async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Failed to fetch data" };
+    console.error(`Failed to fetch data`, error);
   }
 });
 
@@ -1790,7 +1787,7 @@ const _category_$1 = /*#__PURE__*/Object.freeze({
 const details = defineEventHandler(async (event) => {
   const query = getQuery$1(event);
   const movieId = query.movieId;
-  if (!movieId) return { error: "Movie ID is required" };
+  if (!movieId) return { error: "Tmdb ID is required" };
   return await fetchTMDBData(`/movie/${movieId}`, { append_to_response: "credits,videos" });
 });
 
@@ -1858,7 +1855,7 @@ const popular$1 = /*#__PURE__*/Object.freeze({
 const providers = defineEventHandler(async (event) => {
   const query = getQuery$1(event);
   const movieId = query.movieId;
-  if (!movieId) return { error: "Movie ID is required" };
+  if (!movieId) return { error: "Tmdb ID is required" };
   return await fetchTMDBData(`/movie/${movieId}/watch/providers`);
 });
 
@@ -1872,7 +1869,7 @@ const search = defineEventHandler(async (event) => {
   if (!q) {
     return { results: [], total_pages: 1 };
   }
-  let url = `/search/movie?query=${encodeURIComponent(q)}&page=${page}`;
+  const url = `/search/movie?query=${encodeURIComponent(q)}&page=${page}`;
   try {
     const data = await fetchTMDBData(url);
     return {

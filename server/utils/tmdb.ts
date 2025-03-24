@@ -1,5 +1,7 @@
+import { useRuntimeConfig } from '#imports'
+
 export const getTMDBConfig = () => {
-    const config = useRuntimeConfig();
+    const config = useRuntimeConfig() as { public: PublicRuntimeConfig }
     return {
         BASE_URL: config.public.tmdbBaseUrl,
         API_KEY: config.public.tmdbApiKey,
@@ -19,6 +21,7 @@ export const fetchTMDBData = async (endpoint: string, params = {}) => {
         const response = await fetch(url.toString());
         return await response.json();
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error("Error fetching data from TMDB:", error);
         return {error: "Failed to fetch data"};
     }

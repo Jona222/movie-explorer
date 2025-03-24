@@ -9,14 +9,14 @@
       </p>
       <div class="flex justify-center gap-4">
         <button
-            @click="onLogin"
             class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition"
+            @click="onLogin"
         >
           {{ t('loginPrompt.login') }}
         </button>
         <button
-            @click="$emit('close')"
             class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg transition"
+            @click="$emit('close')"
         >
           {{ t('loginPrompt.cancel') }}
         </button>
@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['close'])
 import {useAuth} from '~/composables/useAuth'
 import {useI18n} from 'vue-i18n'
+const emit = defineEmits(['close'])
 
 const {t} = useI18n()
 

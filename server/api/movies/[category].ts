@@ -1,8 +1,10 @@
-export default defineEventHandler(async (event) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default defineEventHandler(async (event: any) => {
     const {page} = getQuery(event);
     const category = event.context.params?.category;
 
     if (!category) {
+        // eslint-disable-next-line no-console
         console.error("Missing category parameter in API request.");
         return {error: "Invalid category request"};
     }
@@ -18,6 +20,7 @@ export default defineEventHandler(async (event) => {
     const tmdbEndpoint = categoryMap[category];
 
     if (!tmdbEndpoint) {
+        // eslint-disable-next-line no-console
         console.error(`Invalid category: ${category}`);
         return {error: `Invalid category: ${category}`};
     }
@@ -29,6 +32,7 @@ export default defineEventHandler(async (event) => {
             total_pages: data.total_pages || 3,
         };
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error fetching ${category}:`, error);
         return {error: `Failed to fetch ${category} movies`};
     }

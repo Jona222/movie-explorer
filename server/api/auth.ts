@@ -13,6 +13,7 @@ export default defineEventHandler(async () => {
         const data = await response.json();
         return data;
     } catch (error) {
-        return {error: 'Failed to fetch data'};
+        // eslint-disable-next-line no-console
+        console.error(`Failed to fetch data`, error)
     }
 });
